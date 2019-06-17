@@ -36,7 +36,7 @@ public class Args {
     }
 
     private boolean parseSchema(){
-        for (String element: schema.split("\\.")) {
+        for (String element: schema.split("\\.")){
             parseSchemaElement(element);
         }
         return true;
@@ -111,7 +111,6 @@ public class Args {
             message.append(c);
         }
         message.append(" unexpected.");
-
         return message.toString();
     }
 

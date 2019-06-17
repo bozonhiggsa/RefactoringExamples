@@ -5,7 +5,7 @@ package com.application.argsExtraction.version1;
  * Pattern in command line: -abc -abdfes
  * @author Ihor Savchenko
  */
-public class Main {
+public class Main1 {
 
     public static void main(String[] args) {
         Args arg = new Args("a.b.c", args);
