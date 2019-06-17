@@ -24,13 +24,13 @@ public class Args {
 
     private ErrorCode errorCode = ErrorCode.OK;
 
-    public Args(String schema, String[] args) throws ParseException{
+    public Args(String schema, String[] args) throws ParseException {
         this.schema = schema;
         this.args = args;
         valid = parse();
     }
 
-    private boolean parse() throws ParseException{
+    private boolean parse() throws ParseException {
         if(schema.length() == 0 && args.length == 0)
             return true;
         parseSchema();
@@ -38,7 +38,7 @@ public class Args {
         return valid;
     }
 
-    private boolean parseSchema() throws ParseException{
+    private boolean parseSchema() throws ParseException {
         for (String element: schema.split("\\.")){
             if(element.length() > 0){
                 String trimmedElement = element.trim();
@@ -48,7 +48,7 @@ public class Args {
         return true;
     }
 
-    private void parseSchemaElement(String element) throws ParseException{
+    private void parseSchemaElement(String element) throws ParseException {
         char elementId = element.charAt(0);
         String elementTail = element.substring(1);
         validateSchemaElementId(elementId);
@@ -58,13 +58,13 @@ public class Args {
             parseStringSchemaElement(elementId);
     }
 
-    private void validateSchemaElementId(char elementId) throws ParseException{
+    private void validateSchemaElementId(char elementId) throws ParseException {
         if(!Character.isLetter(elementId)){
             throw new ParseException("Bad character: " + elementId + " in Args format: " + schema, 0);
         }
     }
 
-   private boolean isBooleanSchemaElement(String elementTail){
+   private boolean isBooleanSchemaElement(String elementTail) {
        return elementTail.length() == 0;
    }
 
@@ -72,15 +72,15 @@ public class Args {
         booleanArgs.put(elementId, false);
     }
 
-    private boolean isStringSchemaElement(String elementTail){
+    private boolean isStringSchemaElement(String elementTail) {
         return elementTail.equals("*");
     }
 
-    private void parseStringSchemaElement(char elementId){
+    private void parseStringSchemaElement(char elementId) {
         stringArgs.put(elementId, "");
     }
 
-    private boolean parseArguments(){
+    private boolean parseArguments() {
         for(currentArgument = 0; currentArgument < args.length; currentArgument++){
             String arg = args[currentArgument];
             parseArgument(arg);
@@ -88,17 +88,17 @@ public class Args {
         return true;
     }
 
-    private void parseArgument(String arg){
+    private void parseArgument(String arg) {
         if(arg.startsWith("-"))
             parseElements(arg);
     }
 
-    private void parseElements(String arg){
+    private void parseElements(String arg) {
         for(int i = 1; i < arg.length(); i++)
             parseElement(arg.charAt(i));
     }
 
-    private void parseElement(char argChar){
+    private void parseElement(char argChar) {
         if(setArgument(argChar))
             argsFound.add(argChar);
         else {
@@ -107,7 +107,7 @@ public class Args {
         }
     }
 
-    private boolean setArgument(char argChar){
+    private boolean setArgument(char argChar) {
         boolean set = true;
         if(isBoolean(argChar))
             setBooleanArg(argChar, true);
@@ -118,19 +118,19 @@ public class Args {
         return set;
     }
 
-    private boolean isBoolean(char argChar){
+    private boolean isBoolean(char argChar) {
         return booleanArgs.containsKey(argChar);
     }
 
-    private void setBooleanArg(char argChar, boolean value){
+    private void setBooleanArg(char argChar, boolean value) {
         booleanArgs.put(argChar, value);
     }
 
-    private boolean isString(char argChar){
+    private boolean isString(char argChar) {
         return stringArgs.containsKey(argChar);
     }
 
-    private void setStringArg(char argChar, String s){
+    private void setStringArg(char argChar, String s) {
         currentArgument++;
         try {
             stringArgs.put(argChar, args[currentArgument]);
@@ -142,11 +142,11 @@ public class Args {
         }
     }
 
-    public int cardinality(){
+    public int cardinality() {
         return argsFound.size();
     }
 
-    public String usage(){
+    public String usage() {
         if(schema.length() > 0)
             return "-[" + schema + "]";
         else
@@ -166,7 +166,7 @@ public class Args {
         return "";
     }
 
-    private String unexpectedArgumentMessage(){
+    private String unexpectedArgumentMessage() {
         StringBuffer message = new StringBuffer("Argument(s) - ");
         for (char c: unexpectedArguments) {
             message.append(c);
@@ -175,34 +175,34 @@ public class Args {
         return message.toString();
     }
 
-    public boolean getBoolean(char arg){
+    public boolean getBoolean(char arg) {
         return falseIfNull(booleanArgs.get(arg));
     }
 
-    private boolean falseIfNull(Boolean b){
+    private boolean falseIfNull(Boolean b) {
         return b == null ? false : b;
     }
 
-    public String getString(char arg){
+    public String getString(char arg) {
         return blankIfNull(stringArgs.get(arg));
     }
 
-    private String blankIfNull(String s){
+    private String blankIfNull(String s) {
         return s == null ? "" : s;
     }
 
-    public int getNumberOfUniqueBooleanArguments(){
+    public int getNumberOfUniqueBooleanArguments() {
         return booleanArgs.size();
     }
-    public int getNumberOfUniqueStringArguments(){
+    public int getNumberOfUniqueStringArguments() {
         return stringArgs.size();
     }
 
-    public boolean has(char arg){
+    public boolean has(char arg) {
         return argsFound.contains(arg);
     }
 
-    public boolean isValid(){
+    public boolean isValid() {
         return valid;
     }
 }
