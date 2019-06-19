@@ -38,8 +38,6 @@ public class Args {
             marshalers.put(elementId, new IntegerArgumentMarshaler());
         else if(elementTail.equals("##"))
             marshalers.put(elementId, new DoubleArgumentMarshaler());
-        else if(elementTail.equals("[*]"))
-            marshalers.put(elementId, new StringArrayArgumentMarshaler());
         else
             throw new ArgsException(elementId, null, ErrorCode.INVALID_ARGUMENT_NAME);
     }
@@ -101,11 +99,7 @@ public class Args {
         return IntegerArgumentMarshaler.getValue(marshalers.get(arg));
     }
 
-    /*public double getDouble(char arg) {
+    public double getDouble(char arg) {
         return DoubleArgumentMarshaler.getValue(marshalers.get(arg));
-    }*/
-
-    /*public String[] getStringArray(char arg) {
-        return StringArrayArgumentMarshaler.getValue(marshalers.get(arg));
-    }*/
+    }
 }
